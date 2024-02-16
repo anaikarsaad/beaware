@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import LogoImage from '../images/Logo.png';
 import MainImage from '../images/Unnamed-file 1.svg';
 import MainPage from '../pages/Onboarding-page'
+import { useNavigate } from 'react-router-dom';
+import { getDatabase, ref, push } from 'firebase/database';
+import { app, database } from '../firebase';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +13,7 @@ const SignUpPage: React.FC = () => {
     email: '',
     password: '',
   });
-
+  const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -17,10 +21,24 @@ const SignUpPage: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log('Form data submitted:', formData);
+
+    const auth = getAuth(app);
+
+    try {
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      
+      // User successfully created
+      const user = userCredential.user;
+      console.log('User created:', user);
+
+      // Redirect to the Onboarding page after user creation
+      navigate('/onboarding');
+    } catch (error: any) {
+      console.error('Error creating user:', error.message);
+    }
   };
 
   return (

@@ -14,6 +14,7 @@
     "@uiw/react-color-circle": "^2.0.6",
     "color-picker": "^0.0.1",
     "dom": "^0.0.3",
+    "firebase": "^10.8.0",
     "primereact": "^10.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
