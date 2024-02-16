@@ -18,7 +18,7 @@ const check:boolean = false;
     createRoutesFromElements(
       <Route>
      <Route path='/' element={<Admin></Admin>}/>
-      <Route path='onboarding' element={<OnboardingPage/>}/>
+      <Route path='/onboarding' element={<OnboardingPage/>}/>
       <Route path='/signup' element={<SignUpPage/>}/>
     <Route  
     path='/admin'  
