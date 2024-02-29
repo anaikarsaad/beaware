@@ -1,22 +1,7 @@
 import React, { useState } from 'react';
 import QRCode from 'qrcode.react';
-
 import LogoIcon from '../images/Logo.png';
-
-
-
-// Make sure to replace these with actual imports for your SVGs or icon components
-// import { ReactComponent as BackIcon } from './icons/BackIcon';
 import userIcon from '../images/username.png';
-
-
-
-
-
-// import { ReactComponent as LogoIcon } from './icons/LogoIcon';
-// import { ReactComponent as EditIcon } from './icons/EditIcon';
-
-
 
 const ImageInfo: React.FC<{
   name: string;
@@ -29,53 +14,50 @@ const ImageInfo: React.FC<{
     navigator.clipboard.writeText(qrCodeData)
       .then(() => {
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // Hide the copied message after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
       })
       .catch((error) => console.error('Copy failed', error));
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-       
-        
-      <header className="flex items-center justify-between bg-white p-4 shadow-md">
+    <div className="flex flex-col min-h-screen bg-gray-200">
+      <header className="flex justify-between items-center p-4 bg-white shadow-md">
         <div className="flex items-center">
-          {/* Replace with actual SVG icon */}
-          <span className="text-gray-700 mr-2 cursor-pointer">{"<"}</span>
-          <img src={LogoIcon} alt="Logo" className="h-8" /> {/* Logo icon */}
-          <span className="font-bold text-xl">BeAware</span>
+          <button className="text-gray-600">
+            <span className="material-icons">arrow_back</span>
+          </button>
+          <img src={LogoIcon} alt="BeAware Logo" className="h-10 ml-2" />
         </div>
-        <span className="rounded-full bg-gray-200 p-2">
-        <img src={userIcon} alt="User" className="h-8 rounded-full" /> {/* User icon */}
-        </span>
+        <div className="flex items-center">
+          <span className="text-gray-800 text-sm mr-2">User name</span>
+          <img src={userIcon} alt="User" className="h-8 w-8 rounded-full" />
+        </div>
       </header>
-
-      {/* Content */}
-      <div className="flex flex-grow items-center justify-center p-8">
-        <div className="bg-white p-6 rounded-lg shadow-lg flex max-w-4xl w-full mx-auto">
-          <div className="flex-1">
-            <div className="aspect-w-1 aspect-h-1">
-              <img src={imageUrl} alt={name} className="rounded-lg object-cover" />
+      <div className="flex-grow flex items-center justify-center p-4">
+        <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-4 shadow rounded-lg flex flex-col justify-between">
+            <img src={imageUrl} alt={name} className="rounded-lg w-full" />
+            <div>
+              <h2 className="text-2xl font-semibold mt-4">{name}</h2>
+              <p className="text-gray-600">Sub information will be displayed here</p>
+              <button className="text-blue-600 hover:text-blue-800 mt-4">
+                Edit image
+              </button>
             </div>
-            <h2 className="text-2xl font-bold my-4">{name}</h2>
-            <p className="text-gray-600 mb-4">Sub information will be displayed here</p>
-            <button className="text-blue-500 hover:text-blue-700 transition-colors duration-300">
-              {/* Replace with actual SVG icon */}
-              Edit image
-            </button>
           </div>
-
-          <div className="flex-1 flex flex-col items-center">
-            <div className="mb-4">
-              <QRCode value={qrCodeData} size={128} />
+          <div className="bg-white p-4 shadow rounded-lg flex flex-col items-center justify-between">
+            <div>
+              <QRCode value={qrCodeData} size={256} />
             </div>
-            <button
-              onClick={handleCopy}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer transition-colors duration-300"
-            >
-              Copy QR Code
-            </button>
-            {copied && <span className="text-green-500 mt-2">Copied!</span>}
+            <div>
+              <button
+                onClick={handleCopy}
+                className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out"
+              >
+                Copy QR Code
+              </button>
+              {copied && <p className="text-green-500 mt-2">Copied to clipboard!</p>}
+            </div>
           </div>
         </div>
       </div>
