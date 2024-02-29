@@ -12,6 +12,7 @@ import {
 import Admin from './pages/Admin';
 import OnboardingPage from './pages/Onboarding-page';
 import SignUpPage from './pages/Sign-up-page';
+import CompanionSetup from './pages/CompanionSetup';
 const App: React.FC = () => {
 const check:boolean = false;
   const router = createBrowserRouter(
@@ -20,6 +21,7 @@ const check:boolean = false;
      <Route path='/' element={<Admin></Admin>}/>
       <Route path='/onboarding' element={<OnboardingPage/>}/>
       <Route path='/signup' element={<SignUpPage/>}/>
+      <Route path='/cs' element={<CompanionSetup/>}/>
     <Route  
     path='/admin'  
     element={<Admin/>}
