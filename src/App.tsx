@@ -13,6 +13,7 @@ import Admin from './pages/Admin';
 import OnboardingPage from './pages/Onboarding-page';
 import SignUpPage from './pages/Sign-up-page';
 import CompanionSetup from './pages/CompanionSetup';
+import ImageInfo from './pages/ImageInfo';
 const App: React.FC = () => {
 const check:boolean = false;
   const router = createBrowserRouter(
@@ -22,6 +23,8 @@ const check:boolean = false;
       <Route path='/onboarding' element={<OnboardingPage/>}/>
       <Route path='/signup' element={<SignUpPage/>}/>
       <Route path='/cs' element={<CompanionSetup/>}/>
+      <Route path="/ii" element={<ImageInfo name="Sample Image" imageUrl="https://via.placeholder.com/300" qrCodeData="Sample QR Code Data" />} />
+        {/* ... (other routes) */}
     <Route  
     path='/admin'  
     element={<Admin/>}
