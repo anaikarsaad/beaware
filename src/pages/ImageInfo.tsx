@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
 import QRCode from 'qrcode.react';
 
-// Assume SVGs for icons are imported or you're using an icon library
-// import { ReactComponent as EditIcon } from './path-to-edit-icon.svg';
-// import { ReactComponent as UserIcon } from './path-to-user-icon.svg';
-// import { ReactComponent as Logo } from './path-to-logo.svg';
-// import { ReactComponent as BackArrow } from './path-to-back-arrow.svg';
+import LogoIcon from '../images/Logo.png';
+
+
+
+// Make sure to replace these with actual imports for your SVGs or icon components
+// import { ReactComponent as BackIcon } from './icons/BackIcon';
+import userIcon from '../images/username.png';
+
+
+
+
+
+// import { ReactComponent as LogoIcon } from './icons/LogoIcon';
+// import { ReactComponent as EditIcon } from './icons/EditIcon';
+
+
 
 const ImageInfo: React.FC<{
   name: string;
@@ -16,63 +27,55 @@ const ImageInfo: React.FC<{
 
   const handleCopy = () => {
     navigator.clipboard.writeText(qrCodeData)
-      .then(() => setCopied(true))
-      .catch((error) => console.error('Error copying to clipboard: ', error));
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // Hide the copied message after 2 seconds
+      })
+      .catch((error) => console.error('Copy failed', error));
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      {/* Header with logo and user icon */}
-      <header className="flex items-center justify-between p-4 border-b">
-        {/* Back navigation and logo */}
+    <div className="flex flex-col min-h-screen bg-gray-50">
+       
+        
+      <header className="flex items-center justify-between bg-white p-4 shadow-md">
         <div className="flex items-center">
-          {/* Replace with <BackArrow /> */}
-          <span>{"<"}</span> 
-          {/* Replace with <Logo /> */}
-          <span>BeAware</span>
+          {/* Replace with actual SVG icon */}
+          <span className="text-gray-700 mr-2 cursor-pointer">{"<"}</span>
+          <img src={LogoIcon} alt="Logo" className="h-8" /> {/* Logo icon */}
+          <span className="font-bold text-xl">BeAware</span>
         </div>
-        {/* User icon */}
-        {/* Replace with <UserIcon /> */}
-        <span>User name</span>
+        <span className="rounded-full bg-gray-200 p-2">
+        <img src={userIcon} alt="User" className="h-8 rounded-full" /> {/* User icon */}
+        </span>
       </header>
 
-      {/* Main content */}
-      <div className="flex-grow flex items-center justify-center p-8">
-        <div className="flex space-x-8">
-          {/* Image column */}
-          <div className="w-1/2">
-            {/* Image container */}
-            <div className="w-full h-64 overflow-hidden rounded-lg bg-white shadow-lg p-4">
-              <img src={imageUrl} alt={name} className="object-cover rounded-lg" />
+      {/* Content */}
+      <div className="flex flex-grow items-center justify-center p-8">
+        <div className="bg-white p-6 rounded-lg shadow-lg flex max-w-4xl w-full mx-auto">
+          <div className="flex-1">
+            <div className="aspect-w-1 aspect-h-1">
+              <img src={imageUrl} alt={name} className="rounded-lg object-cover" />
             </div>
-            {/* Image info */}
-            <div className="mt-4">
-              <h2 className="text-2xl font-bold">{name}</h2>
-              <p>Sub information will be displayed here</p>
-              {/* Edit button */}
-              {/* Replace with <EditIcon /> inside the button */}
-              <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 focus:outline-none">
-                Edit image
-              </button>
-            </div>
+            <h2 className="text-2xl font-bold my-4">{name}</h2>
+            <p className="text-gray-600 mb-4">Sub information will be displayed here</p>
+            <button className="text-blue-500 hover:text-blue-700 transition-colors duration-300">
+              {/* Replace with actual SVG icon */}
+              Edit image
+            </button>
           </div>
 
-          {/* QR code column */}
-          <div className="w-1/2 bg-white shadow-lg rounded-lg p-4 flex flex-col items-center">
-            <h3 className="text-lg font-semibold">QR Code of the image</h3>
-            <p className="text-sm mb-4">Click the QR to copy link</p>
-            <QRCode value={qrCodeData} size={128} />
+          <div className="flex-1 flex flex-col items-center">
+            <div className="mb-4">
+              <QRCode value={qrCodeData} size={128} />
+            </div>
             <button
-              className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
               onClick={handleCopy}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer transition-colors duration-300"
             >
-              Copy
+              Copy QR Code
             </button>
-            {copied && <p className="text-green-500 mt-2">Copied to clipboard!</p>}
+            {copied && <span className="text-green-500 mt-2">Copied!</span>}
           </div>
         </div>
       </div>
