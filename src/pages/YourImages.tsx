@@ -15,9 +15,9 @@ const YourImages: React.FC<YourImagesProps> = ({ name, imageUrl }) => {
     { name: 'Image 1', number: 1 },
     { name: 'Image 2', number: 2 },
     { name: 'Image 3', number: 3 },
-    //{ name: 'Image 4', number: 4 },
-    //{ name: 'Image 5', number: 5 },
-    //{ name: 'Image 6', number: 6 },
+    { name: 'Image 4', number: 4 },
+    { name: 'Image 5', number: 5 },
+    { name: 'Image 6', number: 6 },
   ];
 
   return (
