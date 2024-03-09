@@ -5,7 +5,7 @@ import { getDatabase, ref, push } from 'firebase/database';
 import { app } from '../firebase'; // Assuming 'app' is your Firebase app instance
 
 const OnboardingPage: React.FC = () => {
-  const [color, setColor] = useState("f6f6f6");
+  const [color, setColor] = useState("");
   const [name, setName] = useState(""); // State for user name
   const [imageLink, setImageLink] = useState(""); // State for image link
   const [showColor, setShowColor] = useState(false);

@@ -1,12 +1,12 @@
-//import React, { useState } from 'react';
-import LogoImage from '../images/Logo.png';
-import MainImage from '../images/Unnamed-file 1.svg';
-import MainPage from '../pages/Onboarding-page'
-import { useNavigate } from 'react-router-dom';
-import { getDatabase, ref, push } from 'firebase/database';
-import { app, database } from '../firebase';
 import React, { useState, useEffect } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider,  signInWithPopup,
+  OAuthProvider,  } from 'firebase/auth';
+import { app } from '../firebase'; // Ensure you have this Firebase configuration file
+import LogoImage from '../images/Logo.png'; // Update with your actual path
+import MainImage from '../images/Unnamed-file 1.svg'; // Update with your actual path
+import GoogleLogo from '../images/google-logo.png'; // Add your Google logo SVG path
+import AppleLogo from '../images/apple-logo.png'; 
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -14,133 +14,152 @@ const SignUpPage: React.FC = () => {
     email: '',
     password: '',
   });
-
-  const [userCreated, setUserCreated] = useState(false);  // New state
-
+  const [userCreated, setUserCreated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Watch for changes in userCreated state
     if (userCreated) {
-      navigate('/onboarding');  // Navigate to onboarding page
+      navigate('/onboarding');
     }
   }, [userCreated, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleGoogleSignup = async () => {
     const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
     try {
-      // Create user with email and password
-      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      const result = await signInWithPopup(auth, provider);
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      console.log(result.user);
+      navigate('/onboarding'); // Or your success route
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-      // User successfully created
-      const user = userCredential.user;
-      console.log('User created:', user);
+  const handleAppleSignup = async () => {
+    const auth = getAuth(app);
+    const provider = new OAuthProvider('apple.com');
 
-      // Set the userCreated state to trigger navigation
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // Signed in 
+      console.log(result.user);
+      navigate('/onboarding'); // Or your success route
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const auth = getAuth(app);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      console.log('User created:', userCredential.user);
       setUserCreated(true);
-    } catch (error: any) {
-      console.error('Error creating user:', error.message);
+    } catch (error) {
+      console.error('Error creating user:', error);
     }
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex flex-col lg:flex-row min-h-screen">
       {/* Left Column */}
-      <div className="flex-1 p-8 text-red">
-        <img className="mt-10" src={LogoImage} alt="Description of the image" />
-        <h1 className="text-3xl font-bold mb-4">Sign Up for your application</h1>
-        <p>Already have an Account <a href="MainPage">Login</a></p>
+      <div className="w-full lg:w-1/2 flex flex-col justify-start lg:justify-center items-center lg:items-start px-6 lg:px-12 py-8 lg:py-12 lg:pt-24">
+        <img src={LogoImage} alt="Logo" className="h-12 mb-6" />
+        
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Sign-up to our application</h1>
+        <p className="mb-8">Already have an account? 
+          <a href="/login" className="text-blue-600 hover:underline">Login</a>
+        </p>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="mb-4">
+        <form onSubmit={handleSubmit} className="w-full max-w-md">
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
-              Name:
-            </label>
             <input
               type="text"
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full border rounded py-2 px-3"
+              placeholder="Name"
+              className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
-              Email:
-            </label>
             <input
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border rounded py-2 px-3"
+              placeholder="Email"
+              className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
             />
           </div>
 
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
-              Password:
-            </label>
             <input
               type="password"
               id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full border rounded py-2 px-3"
+              placeholder="Password"
+              className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
             />
           </div>
 
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+            className="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded-lg text-lg"
           >
-            Let's Go
+            Let's go
           </button>
+
+          <div className="text-xs text-gray-500 mt-3">
+            By creating an account you are agreeing to the 
+            <a href="/terms" className="underline text-gray-500"> Terms and Conditions</a> and 
+            <a href="/privacy" className="underline text-gray-500"> Privacy Policy</a>.
+          </div>
         </form>
 
-        <p>By creating an account you are agreeing to <a href="MainPage">terms and condition</a>  and <a href="">privacy policy</a> </p>
-                {/* Buttons */}
-<div className="flex flex-col items-center mt-4">
-  <button className="bg-white text-black font-semibold py-1 px-2 border border-black rounded hover:bg-gray-800 hover:border-gray-800" style={{ width: '320px' }}>
-    Sign up with Google
-  </button>
-  <br />
-  <button className="bg-white text-black font-semibold mt-2 py-1 px-2 border border-black rounded hover:bg-gray-800 hover:border-gray-800" style={{ width: '320px' }}>
-    Sign up with Apple
-  </button>
-</div>
-  
-        
+        <div className="flex justify-between w-full max-w-md mt-8">
+          <hr className="w-1/4 border-t-2 border-gray-200"/>
+          <p className="text-center text-gray-400 uppercase px-3">or</p>
+          <hr className="w-1/4 border-t-2 border-gray-200"/>
+        </div>
+
+        <div className="flex flex-col justify-between  w-full max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
+        <button onClick={handleGoogleSignup} className="w-full mb-4">
+          <img src={GoogleLogo} alt="Sign up with Google" className="w-full" />
+        </button>
+        <button onClick={handleAppleSignup} className="w-full">
+          <img src={AppleLogo} alt="Sign up with Apple" className="w-full" />
+        </button>
+      </div>
       </div>
 
       {/* Right Column */}
-      <div className="flex-1 bg-blue-900 p-8 ">
-        {/* Add content for the right column */}
-        <h1 className='text-4xl font-bold text-white mt-10'>TRANSFORMING SILENCE INTO EFFICIENCY</h1>
-        <p className='text-m text-white m-5 text-center' >Your professional DEAF AI companion</p>
-        
-        <img className='mx-auto my-auto' src={MainImage} alt="Description of the image" />
-      </div>
+      <div className="w-full lg:w-1/2 bg-blue-900 flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
+        <div className="text-center">
+          <h1 className="text-white text-2xl lg:text-3xl font-bold mb-4">TRANSFORMING SILENCE INTO EFFICIENCY</h1>
+          <p className="text-white mb-6">Your Professional DEAF AI Companion</p>
+          <img src={MainImage} alt="Main Illustration" className="w-3/4 lg:w-1/2 max-w-lg" style={{ maxWidth: '500px' }} />
+        </div>
+        </div>
     </div>
   );
-}
+};
 
 export default SignUpPage;
