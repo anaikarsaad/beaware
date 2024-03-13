@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider,  signInWithPopup,
-  OAuthProvider,  } from 'firebase/auth';
 import { app } from '../firebase'; // Ensure you have this Firebase configuration file
 import LogoImage from '../images/Logo.png'; // Update with your actual path
 import MainImage from '../images/Unnamed-file 1.svg'; // Update with your actual path
 import GoogleLogo from '../images/google-logo.png'; // Add your Google logo SVG path
 import AppleLogo from '../images/apple-logo.png'; 
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, OAuthProvider } from 'firebase/auth';
+
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
