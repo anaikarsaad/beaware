@@ -43,12 +43,7 @@ const check:boolean = false;
       {/* <Route path="/ii" element={<ImageInfo name="Sample Image" imageUrl="https://via.placeholder.com/300" qrCodeData="Sample QR Code Data" />} /> */}
 
       <Route path='/dashboard' element={
-          <Dashboard
-            name={exampleName}
-            imageUrl={exampleImageUrl}
-            qrCodeData={exampleQrCodeData}
-          />
-        } />
+          <Dashboard/>}/>
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
 

@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import Button from '../components/Button';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import { getDatabase, ref, push } from 'firebase/database';
-import { app } from '../firebase'; // Assuming 'app' is your Firebase app instance
+import { getDatabase, ref, push, set } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { app} from '../firebase'; // Assuming 'app' is your Firebase app instance
 
 const OnboardingPage: React.FC = () => {
   const [color, setColor] = useState("");
+  const auth = getAuth(app);
   const [name, setName] = useState(""); // State for user name
   const [imageLink, setImageLink] = useState(""); // State for image link
   const [showColor, setShowColor] = useState(false);
+  const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
   // Handle change for the name input
@@ -33,23 +37,27 @@ const OnboardingPage: React.FC = () => {
     e.preventDefault();
 
     // Save user details to Firebase database
-    const db = getDatabase(app);
-    const userRef = ref(db, 'users'); // Adjust the path as needed
-
-    const formData = {
-      name: name,
-      imageLink: imageLink,
-      color: color,
-    };
-
-    try {
-      await push(userRef, formData);
-      console.log('User details saved:', formData);
-      navigate('/');
-    } catch (error: any) {
-      console.error('Error saving user details:', error.message);
+    if (user) {
+      const db = getDatabase(app);
+      // Use the set method instead of push to save data under the specific user ID
+      const userRef = ref(db, `users/${user.uid}`); // This references the main ID directly
+      
+      const formData = {
+        name: name,
+        imageLink: imageLink,
+        color: color,
+      };
+  
+      try {
+        // Use set instead of push
+        await set(userRef, formData); // This will overwrite the data at this path with formData
+        console.log('User details saved:', formData);
+        navigate('/dashboard');
+      } catch (error: any) {
+        console.error('Error saving user details:', error.message);
+      }
     }
-  };
+};
 
   return (
     <div className='flex items-center justify-center h-screen bg-[#F6F6F6]'>
