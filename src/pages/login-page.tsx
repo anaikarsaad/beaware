@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import LogoImage from '../images/Logo.png'; // Update with your actual path
 import MainImage from '../images/Unnamed-file 1.svg'; // Update with your actual path
+import GoogleLogo from '../images/google-logo.png'; // Add your Google logo SVG path
+import { app } from '../firebase'; // Ensure you have this Firebase configuration file
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
+
 
 const LoginPage: React.FC = () => {
   const [loginData, setLoginData] = useState({
@@ -21,7 +26,7 @@ const LoginPage: React.FC = () => {
     const auth = getAuth();
 
     try {
-      await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
+      await signInWithEmailAndPassword(auth, loginData.email, loginData.password); // Use signInWithEmailAndPassword
       console.log('Login successful');
       navigate('/onboarding');
     } catch (error: any) {
@@ -29,11 +34,26 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const handleGoogleSignup = async () => {
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      console.log(result.user);
+      navigate('/onboarding'); // Or your success route
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   return (
     <div className="flex flex-col lg:flex-row min-h-screen items-center justify-center">
       {/* Left Column */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center px-6 lg:px-12">
-      <img src={LogoImage} alt="Logo" className="h-12 mb-6" />
+        <img src={LogoImage} alt="Logo" className="h-12 mb-6" />
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Login to your account</h1>
         <p className="mb-8">Don't have an account? 
           <a href="/signup" className="text-blue-600 hover:underline">Sign up</a>
@@ -73,6 +93,14 @@ const LoginPage: React.FC = () => {
             Login
           </button>
         </form>
+
+        <div className="flex flex-col justify-between  w-full max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
+          <button onClick={handleGoogleSignup} className="w-full mb-4">
+            <img src={GoogleLogo} alt="Sign up with Google" className="w-full" />
+          </button>
+          
+        </div>
+
       </div>
 
       {/* Right Column */}
