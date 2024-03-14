@@ -104,3 +104,4 @@ const Dashboard: React.FC<StreamDetailsProps> = ({ name, imageUrl, qrCodeData })
 };
 
 export default Dashboard;
+
