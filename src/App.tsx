@@ -16,14 +16,14 @@ import Admin from './pages/Admin';
 import OnboardingPage from './pages/Onboarding-page';
 import SignUpPage from './pages/Sign-up-page';
 import LoginPage from './pages/login-page'
-
+import ForgotPassword from './pages/Forgot-Password';
 import Dashboard from './pages/dashboard';
 
 const exampleName = "Your Name";
 const exampleImageUrl = "https://example.com/image.jpg";
 const exampleQrCodeData = "Some QR Code Data";
-=======
-import ForgotPassword from './pages/Forgot-Password';
+
+
 
 
 const App: React.FC = () => {
