@@ -4,8 +4,7 @@ import { app } from '../firebase'; // Ensure you have this Firebase configuratio
 import LogoImage from '../images/Logo.png'; // Update with your actual path
 import MainImage from '../images/Unnamed-file 1.svg'; // Update with your actual path
 import GoogleLogo from '../images/google-logo.png'; // Add your Google logo SVG path
-import AppleLogo from '../images/apple-logo.png'; 
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, OAuthProvider } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 
 const SignUpPage: React.FC = () => {
@@ -40,19 +39,7 @@ const SignUpPage: React.FC = () => {
     }
   };
 
-  const handleAppleSignup = async () => {
-    const auth = getAuth(app);
-    const provider = new OAuthProvider('apple.com');
-
-    try {
-      const result = await signInWithPopup(auth, provider);
-      // Signed in 
-      console.log(result.user);
-      navigate('/onboarding'); // Or your success route
-    } catch (error) {
-      console.error(error);
-    }
-  };
+ 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const auth = getAuth(app);
@@ -144,9 +131,7 @@ const SignUpPage: React.FC = () => {
         <button onClick={handleGoogleSignup} className="w-full mb-4">
           <img src={GoogleLogo} alt="Sign up with Google" className="w-full" />
         </button>
-        <button onClick={handleAppleSignup} className="w-full">
-          <img src={AppleLogo} alt="Sign up with Apple" className="w-full" />
-        </button>
+        
       </div>
       </div>
 
