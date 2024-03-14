@@ -21,7 +21,7 @@ import Dashboard from './pages/dashboard';
 import CompanionSetup from './pages/CompanionSetup';
 import ImageInfo from './pages/ImageInfo';
 import AccountDetails from './pages/AccountDetails';
-// import Overview from './pages/Overview';
+import Overview from './pages/Overview';
 
 const exampleName = "Your Name";
 const exampleImageUrl = "https://example.com/image.jpg";
@@ -43,13 +43,13 @@ const check:boolean = false;
       {/* <Route path='/cs' element={<CompanionSetup/>}/> */}
       {/* <Route path="/ii" element={<ImageInfo name="Sample Image" imageUrl="https://via.placeholder.com/300" qrCodeData="Sample QR Code Data" />} /> */}
 
-      {/* <Route path='/overview' element={
+       <Route path='/overview' element={
   <Overview
     name={exampleName}
     imageUrl={exampleImageUrl}
     qrCodeData={exampleQrCodeData}
   />
-} /> */}
+} /> 
 
       <Route path='/dashboard' element={
           <Dashboard
