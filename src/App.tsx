@@ -37,12 +37,7 @@ const check:boolean = false;
       <Route path='/signup' element={<SignUpPage/>}/>
 
       <Route path='/dashboard' element={
-          <Dashboard
-            name={exampleName}
-            imageUrl={exampleImageUrl}
-            qrCodeData={exampleQrCodeData}
-          />
-        } />
+          <Dashboard/>}/>
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
 

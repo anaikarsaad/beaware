@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
     try {
       await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
       console.log('Login successful');
-      navigate('/onboarding');
+      navigate('/dashboard');
     } catch (error: any) {
       console.error('Error logging in:', error.message);
     }
