@@ -13,6 +13,7 @@ import Admin from './pages/Admin';
 import OnboardingPage from './pages/Onboarding-page';
 import SignUpPage from './pages/Sign-up-page';
 import LoginPage from './pages/login-page'
+import ForgotPassword from './pages/Forgot-Password';
 
 const App: React.FC = () => {
 const check:boolean = false;
@@ -23,6 +24,7 @@ const check:boolean = false;
       <Route path='/onboarding' element={<OnboardingPage/>}/>
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/signup' element={<SignUpPage/>}/>
+      <Route path="/forgot-password" element={<ForgotPassword />} />
     <Route  
     path='/admin'  
     element={<Admin/>}
