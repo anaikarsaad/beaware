@@ -20,7 +20,8 @@ import ForgotPassword from './pages/Forgot-Password';
 import Dashboard from './pages/dashboard';
 import CompanionSetup from './pages/CompanionSetup';
 import ImageInfo from './pages/ImageInfo';
-// import AccountDetails from './pages/accountdetails';
+import AccountDetails from './pages/AccountDetails';
+import Overview from './pages/Overview';
 
 const exampleName = "Your Name";
 const exampleImageUrl = "https://example.com/image.jpg";
@@ -38,12 +39,22 @@ const check:boolean = false;
       <Route path='/onboarding' element={<OnboardingPage/>}/>
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/signup' element={<SignUpPage/>}/>
-      {/* <Route path='/profile' element={<AccountDetails/>}></Route>  */}
+       <Route path='/profile' element={<AccountDetails/>}></Route> 
       {/* <Route path='/cs' element={<CompanionSetup/>}/> */}
       {/* <Route path="/ii" element={<ImageInfo name="Sample Image" imageUrl="https://via.placeholder.com/300" qrCodeData="Sample QR Code Data" />} /> */}
 
+       <Route path='/overview' element={
+  <Overview
+    name={exampleName}
+    imageUrl={exampleImageUrl}
+    qrCodeData={exampleQrCodeData}
+  />
+} /> 
+
       <Route path='/dashboard' element={
           <Dashboard/>}/>
+
+    
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
