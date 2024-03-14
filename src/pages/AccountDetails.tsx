@@ -34,7 +34,7 @@ const AccountDetails: React.FC = () => {
             {/* Form Fields */}
             <div className="space-y-4">
               <div>
-                <label className="text-gray-600">Name of the user</label>
+                <label className="text-gray-600">User Namer</label>
                 <input type="text" value={userData.name} readOnly className="w-full mt-1 p-2 border rounded" />
               </div>
               <div>
