@@ -1,149 +1,128 @@
-import React, { useState,useEffect } from 'react';
-import Sidebar from './Sidebar'; // Adjust import path as necessary
+import React, { useState, useEffect } from 'react';
+import Sidebar from './Sidebar';
 import Header from '../components/Header';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { getDatabase, ref, onValue, update ,remove} from 'firebase/database';
-import { getAuth } from 'firebase/auth';
+import { getDatabase, ref, onValue } from 'firebase/database';
+import { getAuth, updateEmail, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { app } from '../firebase';
-import { useNavigate } from 'react-router-dom';
 
-interface AccountDetailsProps {
-  // Define props if needed
-}
-
-const AccountDetails: React.FC<AccountDetailsProps> = () => {
-  const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-  });
+const AccountDetails: React.FC = () => {
+  const [showReauthPrompt, setShowReauthPrompt] = useState(false);
+  const [reauthPassword, setReauthPassword] = useState("");
+  const [userData, setUserData] = useState({ name: "", email: "" });
   const [isEditing, setIsEditing] = useState(false);
-  const auth = getAuth(app);
-  const [user, loading, error] = useAuthState(auth);
-  const navigate = useNavigate();
+  const [user] = useAuthState(getAuth(app));
 
   useEffect(() => {
     if (user) {
-      const db = getDatabase();
+      const db = getDatabase(app);
       const userRef = ref(db, `users/${user.uid}`);
       onValue(userRef, (snapshot) => {
         const data = snapshot.val();
-        if (data !== null) {
-          setUserData({
-            name: data.name,
-            email: data.email,
-          });
-        } else {
-          console.error('No data available for this user.');
-        }
-      }, (error) => {
-        console.error('Firebase read failed: ', error);
-      });
+        setUserData({ name: data?.name || "", email: data?.email || user.email });
+      }, { onlyOnce: true });
     }
   }, [user]);
-  // Handlers for Edit, Save and Delete actions
-  const handleEditDetails = () => {
-    setIsEditing(true);
+
+  const handleSaveDetails = async () => {
+    setIsEditing(false); // Turn off editing mode
+    if (!user) {
+      console.error("No user is logged in.");
+      return;
+    }
+  
+    try {
+      await updateEmail(user, userData.email); // Updates the user's email
+      console.log('User email updated successfully in Auth');
+    } catch (error: any) {
+      const errorCode = (error as { code?: string }).code;
+      if (errorCode === 'auth/requires-recent-login') {
+        console.error('Please re-authenticate to update your email.');
+        setShowReauthPrompt(true); // Show re-authentication prompt
+      } else {
+        console.error('Error updating user email:', error);
+      }
+    }
   };
 
-  const handleSaveDetails = () => {
-    setIsEditing(false); // Turn off editing mode
-    // Perform save action, e.g., save to database
-    console.log('Saved:', userData);
+  const handleReauthSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!user) return; // Add this check to ensure 'user' is not null
+    
+    const credential = EmailAuthProvider.credential(user.email!, reauthPassword);
+
+    try {
+      await reauthenticateWithCredential(user, credential);
+      console.log('User re-authenticated successfully.');
+      setShowReauthPrompt(false); // Hide the re-authentication prompt
+      setReauthPassword(""); // Clear the password field
+      await handleSaveDetails(); // Attempt to save details again
+    } catch (error) {
+      console.error('Re-authentication failed:', error);
+    }
   };
 
-  const handleCancelEdit = () => {
-    setIsEditing(false); // Turn off editing mode
-    // Reset user data to its original state
-    setUserData({
-      name: "John Doe",
-      email: "john.doe@example.com",
-      
-    });
-  };
- 
-  const handleDeleteAccount = async () => {
-    // try {
-    //   if (!user) {
-    //     console.error('No user is currently logged in.');
-    //     return;
-    //   }
-  
-    //   // Reauthenticate user (if required)
-    //   const credential = promptForReauthentication(); // You need to implement this function
-    //   if (!credential) {
-    //     console.error('User did not reauthenticate. Account deletion aborted.');
-    //     return;
-    //   }
-  
-    //   // Delete user from authentication
-    //   await auth.currentUser?.reauthenticateWithCredential(credential);
-    //   await auth.currentUser?.delete();
-  
-    //   // Optionally, delete user data from database
-    //   const db = getDatabase();
-    //   await remove(ref(db, `users/${user.uid}`));
-  
-    //   // Navigate to login page or perform any other actions as needed
-    //   navigate('/login');
-    // } catch (error: any) {
-    //   console.error('Error deleting account:', error.message);
-    // }
-  };
-  
-  
-  
+  const handleEditDetails = () => setIsEditing(true);
+  const handleCancelEdit = () => setIsEditing(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(name, value); 
-    setUserData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    setUserData(prevState => ({ ...prevState, [name]: value }));
   };
-
   return (
-    <div className=''>
-      <Header showDeleteButton={true} onDeleteAccount={handleDeleteAccount}/>
-      <div className="bg-gray-50 min-h-screen flex ">
+    <div>
+      <Header showDeleteButton={true} onDeleteAccount={() => {}} /> {/* Implement deletion logic */}
+      <div className="bg-gray-50 min-h-screen flex">
         <Sidebar activeItem="profile" />
-        <main className="flex-1 ">
+        <main className="flex-1">
           <div className="container mx-auto p-8 w-[60%]">
-            <div className="bg-white shadow-lg rounded-lg p-6 h-[380px]">
+            <div className="bg-white shadow-lg rounded-lg p-6">
               <div className="flex justify-between items-center mb-2">
-                <h1 className="text-3xl font-semibold text-gray-800">Account details</h1>
+                <h1 className="text-3xl font-semibold text-gray-800">Account Details</h1>
                 {!isEditing && (
-                  <button onClick={handleEditDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  <button
+                    onClick={handleEditDetails}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  >
                     Edit
                   </button>
                 )}
               </div>
-              <div className='mb-6'>
-                <p>Your information will be displayed here</p>
-              </div>
-              {/* Form Fields */}
               <div className="space-y-4">
-                <div>
-                  <label className="text-gray-600 mb-2">Name of the user</label>
+                {/* <div>
+                  <label className="text-gray-600">Name</label>
                   <input
-                    type="text" value={userData.name} readOnly={!isEditing} onChange={handleInputChange} name="name"
-                    className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out mt-3"
-                    required
+                    type="text"
+                    name="name"
+                    value={userData.name}
+                    onChange={handleInputChange}
+                    readOnly={!isEditing}
+                    className="w-full mt-2 p-2 border rounded"
                   />
-                </div>
+                </div> */}
                 <div>
-                  <label className="text-gray-600 mb-2">Email</label>
+                  <label className="text-gray-600">Email</label>
                   <input
-                    type="email" value={userData.email} readOnly={!isEditing} onChange={handleInputChange} name="email"
-                    className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out mt-3"
+                    type="email"
+                    name="email"
+                    value={userData.email}
+                    onChange={handleInputChange}
+                    readOnly={!isEditing}
+                    className="w-full mt-2 p-2 border rounded"
                   />
                 </div>
                 {isEditing && (
-                  <div className="flex items-center justify-end">
-                    <button onClick={handleSaveDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={handleSaveDetails}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
                       Save
                     </button>
-                    <button onClick={handleCancelEdit} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    <button
+                      onClick={handleCancelEdit}
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    >
                       Cancel
                     </button>
                   </div>
@@ -153,8 +132,22 @@ const AccountDetails: React.FC<AccountDetailsProps> = () => {
           </div>
         </main>
       </div>
+      {showReauthPrompt && (
+        <div className="reauth-modal" style={{ /* Modal styling here */ }}>
+          <form onSubmit={handleReauthSubmit}>
+            <label>Password:</label>
+            <input
+              type="password"
+              value={reauthPassword}
+              onChange={(e) => setReauthPassword(e.target.value)}
+              required
+            />
+            <button type="submit">Submit</button>
+            <button type="button" onClick={() => setShowReauthPrompt(false)}>Cancel</button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
-
 export default AccountDetails;
