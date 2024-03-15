@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import LogoImage from '../images/Logo.png'; // Update with your actual path
 import MainImage from '../images/Unnamed-file 1.svg'; // Update with your actual path
-
+import MyLottieAnimation from '../components/LottieAnimation';
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isResetEmailSent, setIsResetEmailSent] = useState(false);
@@ -78,19 +78,13 @@ const ForgotPassword: React.FC = () => {
       </div>
 
       {/* Right Column */}
-      <div className="w-full lg:w-1/2 bg-blue-900 flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
+      <div className="w-full lg:w-1/2 bg-[#183053] flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
         <div className="text-center">
-          <h1 className="text-white text-2xl lg:text-3xl font-bold mb-4">
-            TRANSFORMING SILENCE INTO EFFICIENCY
-          </h1>
+          <h1 className="text-white text-2xl lg:text-3xl font-bold mb-4">TRANSFORMING SILENCE INTO EFFICIENCY</h1>
           <p className="text-white mb-6">Your Professional DEAF AI Companion</p>
-          <img
-            src={MainImage}
-            alt="Main Illustration"
-            className="w-3/4 lg:w-1/2 max-w-lg"
-            style={{ maxWidth: '500px' }}
-          />
-        </div>
+          {/* <img src={image} alt="Main Illustration" className=" w-[1000px] h-[600px]" style={{ maxWidth: '500px' }} />    */}
+          <MyLottieAnimation/>
+              </div>
       </div>
     </div>
   );

@@ -35,7 +35,9 @@ const check:boolean = false;
       <Route path='/onboarding' element={<OnboardingPage/>}/>
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/signup' element={<SignUpPage/>}/>
+      <Route path='/forgetPassword' element={<ForgotPassword/>}/>
        <Route path='/profile' element={<AccountDetails/>}></Route> 
+
       {/* <Route path='/cs' element={<CompanionSetup/>}/> */}
       {/* <Route path="/ii" element={<ImageInfo name="Sample Image" imageUrl="https://via.placeholder.com/300" qrCodeData="Sample QR Code Data" />} /> */}
 
@@ -52,7 +54,7 @@ const check:boolean = false;
 
     
 
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+      
 
     <Route  
     path='/admin'  

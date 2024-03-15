@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import LogoImage from '../images/Logo.png'; // Update with your actual path
-import MainImage from '../images/Unnamed-file 1.svg'; // Update with your actual path
+import image from '../images/sapien.png'; // Update with your actual path
 import GoogleLogo from '../images/google-logo.png'; // Add your Google logo SVG path
 import { app } from '../firebase'; // Ensure you have this Firebase configuration file
 import { signInWithEmailAndPassword } from 'firebase/auth';
-
+import MyLottieAnimation from '../components/LottieAnimation';
+import { Link } from 'react-router-dom';
 const LoginPage: React.FC = () => {
   const [loginData, setLoginData] = useState({
     email: '',
@@ -48,7 +49,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen items-center justify-center 100vh">
+    <div className="flex flex-col lg:flex-row min-h-screen">
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center px-6 lg:px-12">
         <img src={LogoImage} alt="Logo" className="h-12 mb-6" />
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Login to your account</h1>
@@ -89,6 +90,7 @@ const LoginPage: React.FC = () => {
           >
             Login
           </button>
+          <p className="mt-8"> <Link to="/forgetPassword" className="text-blue-600 hover:underline">Forget Password?</Link></p>
         </form>
 
         <div className="flex flex-col justify-between w-full max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
@@ -98,14 +100,13 @@ const LoginPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 bg-blue-900">
-        <div className="flex items-center justify-center h-full p-8">
-          <img src={MainImage} alt="Inspirational Visual" className="lg:max-w-lg lg:max-h-full" />
-        </div>
-        <div className="absolute bottom-0 left-0 p-8 text-white">
-          <h1 className="text-3xl font-bold mb-4">WELCOME BACK</h1>
-          <p>Connect to your professional DEAF AI companion</p>
-        </div>
+      <div className="w-full lg:w-1/2 bg-[#183053] flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
+        <div className="text-center">
+          <h1 className="text-white text-2xl lg:text-3xl font-bold mb-4">TRANSFORMING SILENCE INTO EFFICIENCY</h1>
+          <p className="text-white mb-6">Your Professional DEAF AI Companion</p>
+          {/* <img src={image} alt="Main Illustration" className=" w-[1000px] h-[600px]" style={{ maxWidth: '500px' }} />    */}
+          <MyLottieAnimation/>
+              </div>
       </div>
     </div>
   );

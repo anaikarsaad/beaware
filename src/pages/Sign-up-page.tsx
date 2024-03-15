@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { app } from '../firebase'; // Ensure you have this Firebase configuration file
 import LogoImage from '../images/Logo.png'; // Update with your actual path
-import MainImage from '../images/Unnamed-file 1.svg'; // Update with your actual path
+
+import image from '../images/sapien.png'
 import GoogleLogo from '../images/google-logo.png'; // Add your Google logo SVG path
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import MyLottieAnimation from '../components/LottieAnimation';
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -103,7 +105,7 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen">
+    <div className="flex flex-col lg:flex-row ">
       {/* Left Column */}
       <div className="w-full lg:w-1/2 flex flex-col justify-start lg:justify-center items-center lg:items-start px-6 lg:px-12 py-8 lg:py-12 lg:pt-24">
         <img src={LogoImage} alt="Logo" className="h-12 mb-6" />
@@ -169,26 +171,27 @@ const SignUpPage: React.FC = () => {
           </div>
         </form>
 
-        <div className="flex justify-between w-full max-w-md mt-8">
+        <div className="flex justify-between  max-w-md mt-8">
           <hr className="w-1/4 border-t-2 border-gray-200"/>
           <p className="text-center text-gray-400 uppercase px-3">or</p>
           <hr className="w-1/4 border-t-2 border-gray-200"/>
         </div>
 
-        <div className="flex flex-col justify-between  w-full max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
+        <div className="flex flex-col justify-between   max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
           <button onClick={handleGoogleSignup} className="w-full mb-4">
-            <img src={GoogleLogo} alt="Sign up with Google" className="w-full" />
+            <img src={GoogleLogo} alt="Sign up with Google" className="" />
           </button>
         </div>
       </div>
 
       {/* Right Column */}
-      <div className="w-full lg:w-1/2 bg-blue-900 flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
+      <div className="w-full lg:w-1/2 bg-[#183053] flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
         <div className="text-center">
           <h1 className="text-white text-2xl lg:text-3xl font-bold mb-4">TRANSFORMING SILENCE INTO EFFICIENCY</h1>
           <p className="text-white mb-6">Your Professional DEAF AI Companion</p>
-          <img src={MainImage} alt="Main Illustration" className="w-3/4 lg:w-1/2 max-w-lg" style={{ maxWidth: '500px' }} />
-        </div>
+          {/* <img src={image} alt="Main Illustration" className=" w-[1000px] h-[600px]" style={{ maxWidth: '500px' }} />    */}
+          <MyLottieAnimation/>
+              </div>
       </div>
     </div>
   );

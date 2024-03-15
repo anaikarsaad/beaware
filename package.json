@@ -15,6 +15,7 @@
     "color-picker": "^0.0.1",
     "dom": "^0.0.3",
     "firebase": "^10.8.1",
+    "lottie-web": "^5.12.2",
     "primereact": "^10.5.0",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
