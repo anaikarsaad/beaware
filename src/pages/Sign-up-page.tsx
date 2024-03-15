@@ -4,9 +4,7 @@ import { app } from '../firebase'; // Ensure you have this Firebase configuratio
 import LogoImage from '../images/Logo.png'; // Update with your actual path
 import MainImage from '../images/Unnamed-file 1.svg'; // Update with your actual path
 import GoogleLogo from '../images/google-logo.png'; // Add your Google logo SVG path
-import AppleLogo from '../images/apple-logo.png'; 
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, OAuthProvider } from 'firebase/auth';
-
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +13,8 @@ const SignUpPage: React.FC = () => {
     password: '',
   });
   const [userCreated, setUserCreated] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,36 +25,27 @@ const SignUpPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const handleGoogleSignup = async () => {
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
 
-    try {
-      const result = await signInWithPopup(auth, provider);
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      console.log(result.user);
-      navigate('/onboarding'); // Or your success route
-    } catch (error) {
-      console.error(error);
+    // Validate email
+    if (e.target.name === 'email') {
+      setEmailError(validateEmail(e.target.value));
+    }
+    
+    // Validate password
+    if (e.target.name === 'password') {
+      setPasswordError(validatePassword(e.target.value));
     }
   };
 
-  const handleAppleSignup = async () => {
-    const auth = getAuth(app);
-    const provider = new OAuthProvider('apple.com');
-
-    try {
-      const result = await signInWithPopup(auth, provider);
-      // Signed in 
-      console.log(result.user);
-      navigate('/onboarding'); // Or your success route
-    } catch (error) {
-      console.error(error);
-    }
-  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Password validation logic
+    if (validatePassword(formData.password) !== '') {
+      console.error('Invalid password. Please ensure your password meets the requirements.');
+      return;
+    }
+  
     const auth = getAuth(app);
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -67,6 +58,48 @@ const SignUpPage: React.FC = () => {
     } catch (error) {
       console.error('Error creating user:', error);
     }
+  };
+
+  const handleGoogleSignup = async () => {
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log(result.user);
+      navigate('/onboarding');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return 'Invalid email address';
+    }
+    return '';
+  };
+
+
+  const validatePassword = (password: string) => {
+    const minLength = 6;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  
+    if (
+      password.length < minLength ||
+      !hasUppercase ||
+      !hasLowercase ||
+      !hasNumber ||
+      !hasSpecialChar
+    ) {
+      return 'Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character';
+    }
+  
+    return ''; 
   };
 
   return (
@@ -105,6 +138,7 @@ const SignUpPage: React.FC = () => {
               className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
             />
+            {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
           </div>
 
           <div className="mb-6">
@@ -118,6 +152,7 @@ const SignUpPage: React.FC = () => {
               className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
             />
+            {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
           </div>
 
           <button
@@ -141,13 +176,10 @@ const SignUpPage: React.FC = () => {
         </div>
 
         <div className="flex flex-col justify-between  w-full max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
-        <button onClick={handleGoogleSignup} className="w-full mb-4">
-          <img src={GoogleLogo} alt="Sign up with Google" className="w-full" />
-        </button>
-        <button onClick={handleAppleSignup} className="w-full">
-          <img src={AppleLogo} alt="Sign up with Apple" className="w-full" />
-        </button>
-      </div>
+          <button onClick={handleGoogleSignup} className="w-full mb-4">
+            <img src={GoogleLogo} alt="Sign up with Google" className="w-full" />
+          </button>
+        </div>
       </div>
 
       {/* Right Column */}
@@ -157,7 +189,7 @@ const SignUpPage: React.FC = () => {
           <p className="text-white mb-6">Your Professional DEAF AI Companion</p>
           <img src={MainImage} alt="Main Illustration" className="w-3/4 lg:w-1/2 max-w-lg" style={{ maxWidth: '500px' }} />
         </div>
-        </div>
+      </div>
     </div>
   );
 };

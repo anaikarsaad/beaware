@@ -1,22 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getDatabase, ref, onValue } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
 import QRCode from 'qrcode.react';
+import { app } from '../firebase'; 
 
-interface StreamDetailsProps {
-  name: string;
-  imageUrl: string;
-  qrCodeData: string;
-}
 
-const Dashboard: React.FC<StreamDetailsProps> = ({ name, imageUrl, qrCodeData }) => {
+const Dashboard = () => {
+  const auth = getAuth(app);
+  const [user, loading, error] = useAuthState(auth);
+  const [details, setDetails] = useState({ name: '', imageUrl: '', color: '#000000' });
   const [copied, setCopied] = useState(false);
-  const [color, setColor] = useState('#000000'); // default color for the color picker
 
+  useEffect(() => {
+    if (user) {
+      const db = getDatabase();
+      const userRef = ref(db, `users/${user.uid}`);
+      onValue(userRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data !== null) {
+          setDetails({
+            name: data.name,
+            imageUrl: data.imageLink,
+            color: data.color,
+          });
+          console.log(data.name);
+          console.log(data.color);
+        }
+        else {
+          // Data is null, handle this case appropriately
+          console.error('No data available for this user.');
+        }
+      },(error) => {
+        console.error('Firebase read failed: ', error);
+      });
+    }
+  }, [user]);
+  
   const handleCopy = () => {
-    navigator.clipboard.writeText(imageUrl)
+    navigator.clipboard.writeText(details.imageUrl)
       .then(() => setCopied(true))
-      .catch((error) => console.error('Copying to clipboard failed: ', error));
+      .catch(err => console.error('Copying to clipboard failed: ', err));
     setTimeout(() => setCopied(false), 2000);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!user) {
+    return <div>Please sign in.</div>;
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen flex">
@@ -46,7 +84,7 @@ const Dashboard: React.FC<StreamDetailsProps> = ({ name, imageUrl, qrCodeData })
                   <input
                     id="image-name"
                     type="text"
-                    value={name}
+                    value={details.name}
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     readOnly // make this editable as per your requirement
                   />
@@ -58,7 +96,7 @@ const Dashboard: React.FC<StreamDetailsProps> = ({ name, imageUrl, qrCodeData })
                   <input
                     id="image-url"
                     type="text"
-                    value={imageUrl}
+                    value={details.imageUrl}
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     readOnly // make this editable as per your requirement
                   />
@@ -70,8 +108,8 @@ const Dashboard: React.FC<StreamDetailsProps> = ({ name, imageUrl, qrCodeData })
                   <input
                     id="color-picker"
                     type="color"
-                    value={color}
-                    onChange={(e) => setColor(e.target.value)}
+                    value={details.color}
+                    onChange={(e) => setDetails({ ...details, color: e.target.value })}
                     className="w-full h-8"
                   />
                 </div>
@@ -86,15 +124,14 @@ const Dashboard: React.FC<StreamDetailsProps> = ({ name, imageUrl, qrCodeData })
             {/* QR Code Section */}
             <div className="w-full lg:w-1/3 px-2 mb-4">
               <div className="flex flex-col items-center p-4 border rounded-lg h-auto bg-white">
-                <QRCode value={qrCodeData} size={128} fgColor={color} />
-                <button
-                  className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-4"
-                  onClick={handleCopy}
-                >
-                  Copy link
-                </button>
-                {copied && <span className="text-green-500 text-sm">Copied to clipboard!</span>}
-              </div>
+                  <QRCode value={details.imageUrl} size={128} fgColor={details.color} />
+              <button
+                onClick={handleCopy}
+              >
+                Copy link
+              </button>
+              {copied && <span>Copied to clipboard!</span>}
+            </div>
             </div>
           </div>
         </div>
@@ -104,3 +141,4 @@ const Dashboard: React.FC<StreamDetailsProps> = ({ name, imageUrl, qrCodeData })
 };
 
 export default Dashboard;
+
