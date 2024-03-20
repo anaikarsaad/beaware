@@ -35,18 +35,18 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleGoogleSignup = async () => {
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+  // const handleGoogleSignup = async () => {
+  //   const auth = getAuth(app);
+  //   const provider = new GoogleAuthProvider();
 
-    try {
-      const result = await signInWithPopup(auth, provider);
-      console.log(result.user);
-      navigate('/overview');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   try {
+  //     const result = await signInWithPopup(auth, provider);
+  //     console.log(result.user);
+  //     navigate('/overview');
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
@@ -93,17 +93,17 @@ const LoginPage: React.FC = () => {
           <p className="mt-8"> <Link to="/forgetPassword" className="text-blue-600 hover:underline">Forget Password?</Link></p>
         </form>
 
-        <div className="flex flex-col justify-between w-full max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
+        {/* <div className="flex flex-col justify-between w-full max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
           <button onClick={handleGoogleSignup} className="w-full mb-4">
             <img src={GoogleLogo} alt="Sign up with Google" className="w-full" />
           </button>
-        </div>
+        </div> */}
       </div>
 
-      <div className="w-full lg:w-1/2 bg-[#183053] flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
+      <div className="w-full lg:w-1/2 bg-white flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
         <div className="text-center">
-          <h1 className="text-white text-2xl lg:text-3xl font-bold mb-4">TRANSFORMING SILENCE INTO EFFICIENCY</h1>
-          <p className="text-white mb-6">Your Professional DEAF AI Companion</p>
+          <h1 className="text-[#183053] text-2xl lg:text-3xl font-bold mb-4">TRANSFORMING SILENCE INTO EFFICIENCY</h1>
+          <p className="text-[#183053] mb-6">Your Professional DEAF AI Companion</p>
           {/* <img src={image} alt="Main Illustration" className=" w-[1000px] h-[600px]" style={{ maxWidth: '500px' }} />    */}
           <MyLottieAnimation/>
               </div>
