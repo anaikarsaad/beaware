@@ -60,34 +60,34 @@ const OnboardingPage: React.FC = () => {
 };
 
   return (
-    <div className='flex items-center justify-center h-screen bg-[#F6F6F6]'>
-      <div className='h-[600px] w-[556px] bg-[#FFFFFF] flex gap-5 items-center flex-col rounded-[20px] drop-shadow-2xl'>
-        {/* Form Content */}
-        <div className='pt-10 flex flex-col gap-1'>
-          <p className='font-bold text-2xl tracking-wide'>Let's set up some basic details</p>
-          <p className='self-center'>Fill the form to know you better</p>
-        </div>
-        <input
-          placeholder='Name'
-          value={name}
-          onChange={handleNameChange}
-          className='border rounded-[20px] border-[#B0B0B0] w-[438px] h-[52px]  p-3'
-        />
-        <input
-          placeholder='Image Link'
-          value={imageLink}
-          onChange={handleImageLinkChange}
-          className='border rounded-[20px] border-[#B0B0B0] w-[438px] h-[52px] p-3'
-        />
+    <div className='flex items-center justify-center h-screen bg-[#F6F6F6] p-4'>
+    <div className='w-full max-w-md bg-white rounded-2xl shadow-2xl p-6'>
+      {/* Form Content */}
+      <div className='pt-10 flex flex-col gap-1 text-center'>
+        <p className='font-bold text-2xl tracking-wide'>Let's set up some basic details</p>
+        <p>Fill the form to know you better</p>
+      </div>
+      <input
+        placeholder='Stream Name'
+        value={name}
+        onChange={handleNameChange}
+        className='w-full bg-gray-100 border border-gray-300 rounded-2xl text-base outline-none text-gray-700 py-2 px-4 my-4'
+      />
+      <input
+        placeholder='Stream Image Link'
+        value={imageLink}
+        onChange={handleImageLinkChange}
+        className='w-full bg-gray-100 border border-gray-300 rounded-2xl text-base outline-none text-gray-700 py-2 px-4 my-4'
+      />
         {/* Color Picker Input */}
-        <div className='relative'>
+        <div className='relative my-4'>
           <input
             placeholder='Color'
             value={color} // Bind color state to input
             onChange={handleColor}
             onFocus={handleFocus}
             onBlur={() => setShowColor(false)}
-            className='border rounded-[20px] border-[#B0B0B0] w-[438px] h-[52px] p-3'
+            className='w-full bg-gray-100 border border-gray-300 rounded-2xl text-base outline-none py-2 px-4'
           />
           <div
             className='h-8 w-8 rounded-full absolute top-1/2 left-[85%] transform -translate-y-1/2'
@@ -96,7 +96,7 @@ const OnboardingPage: React.FC = () => {
         </div>
 
         {/* Submit Button */}
-        <div className='pt-10 self-flexend'>
+       <div className='text-center pt-4'>
           <Button buttonText='Submit' onClick={handleSubmit} />
         </div>
       </div>

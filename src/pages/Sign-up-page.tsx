@@ -62,18 +62,18 @@ const SignUpPage: React.FC = () => {
     }
   };
 
-  const handleGoogleSignup = async () => {
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+  // const handleGoogleSignup = async () => {
+  //   const auth = getAuth(app);
+  //   const provider = new GoogleAuthProvider();
 
-    try {
-      const result = await signInWithPopup(auth, provider);
-      console.log(result.user);
-      navigate('/onboarding');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   try {
+  //     const result = await signInWithPopup(auth, provider);
+  //     console.log(result.user);
+  //     navigate('/onboarding');
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -111,8 +111,7 @@ const SignUpPage: React.FC = () => {
         <img src={LogoImage} alt="Logo" className="h-12 mb-6" />
         
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Sign-up to our application</h1>
-        <p className="mb-8">Already have an account? 
-          <a href="/login" className="text-blue-600 hover:underline">Login</a>
+        <p className="mb-8">Already have an account?  <a href="/login" className="text-blue-600 hover:underline">Login</a>
         </p>
 
         <form onSubmit={handleSubmit} className="w-full max-w-md">
@@ -166,29 +165,29 @@ const SignUpPage: React.FC = () => {
 
           <div className="text-xs text-gray-500 mt-3">
             By creating an account you are agreeing to the 
-            <a href="/terms" className="underline text-gray-500"> Terms and Conditions</a> and 
-            <a href="/privacy" className="underline text-gray-500"> Privacy Policy</a>.
+            Terms and Conditions and 
+             Privacy Policy.
           </div>
         </form>
 
         <div className="flex justify-between  max-w-md mt-8">
           <hr className="w-1/4 border-t-2 border-gray-200"/>
-          <p className="text-center text-gray-400 uppercase px-3">or</p>
+
           <hr className="w-1/4 border-t-2 border-gray-200"/>
         </div>
 
-        <div className="flex flex-col justify-between   max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
+        {/* <div className="flex flex-col justify-between   max-w-xs mt-8 items-center" style={{ width: '25rem', maxWidth: '100%' }}>
           <button onClick={handleGoogleSignup} className="w-full mb-4">
             <img src={GoogleLogo} alt="Sign up with Google" className="" />
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* Right Column */}
-      <div className="w-full lg:w-1/2 bg-[#183053] flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
+      <div className="w-full lg:w-1/2 bg-white flex justify-center items-center px-8 py-8 lg:px-12 lg:py-12 lg:pt-24">
         <div className="text-center">
-          <h1 className="text-white text-2xl lg:text-3xl font-bold mb-4">TRANSFORMING SILENCE INTO EFFICIENCY</h1>
-          <p className="text-white mb-6">Your Professional DEAF AI Companion</p>
+          <h1 className="text-[#183053] text-2xl lg:text-3xl font-bold mb-4">TRANSFORMING SILENCE INTO EFFICIENCY</h1>
+          <p className="text-[#183053] mb-6">Your Professional DEAF AI Companion</p>
           {/* <img src={image} alt="Main Illustration" className=" w-[1000px] h-[600px]" style={{ maxWidth: '500px' }} />    */}
           <MyLottieAnimation/>
               </div>

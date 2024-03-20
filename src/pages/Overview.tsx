@@ -110,9 +110,15 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("hello")
+    // Construct the URL you want to copy
+    const urlToCopy = `http://deafassistant.com/${encodeURIComponent(streamData.streamName)}`;
+  
+    // Use the navigator.clipboard.writeText function to copy the URL
+    navigator.clipboard.writeText(urlToCopy)
       .then(() => setCopied(true))
       .catch(err => console.error('Copying to clipboard failed: ', err));
+  
+    // Reset the 'copied' state after 2 seconds
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -127,9 +133,14 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
               <div className="flex justify-between items-center mb-2">
                 <h1 className="text-3xl font-semibold text-gray-800">Stream Details</h1>
                 {!isEditing && (
-                  <button onClick={handleEditDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Edit
-                  </button>
+                   <><button
+                   onClick={() => window.open('https://www.researchgate.net/publication/359606643_Deaf_Helper_Mobile_Application_for_Interaction_of_Hearing_Disorders_Communities', '_blank')}
+                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4"
+                 >
+                   Read Instructions
+                 </button><button onClick={handleEditDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                      Edit
+                    </button></>
                 )}
               </div>
               <div className='mb-6'>
@@ -172,6 +183,7 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
                 </div>
                 {isEditing && (
                   <div className="flex items-center justify-end">
+
                     <button onClick={handleSaveDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">
                       Save
                     </button>
@@ -192,7 +204,7 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
             <p>Click on QR to copy the link</p>
           </div>
           <div className='pl-3' onClick={handleCopy}>
-            <QRCode value={streamData.imageUrl} size={180} />
+          <QRCode value={`http://deafassistant.com/${encodeURIComponent(streamData.streamName)}`} size={180} />
             {copied && <span className='pl-3'>Copied to clipboard!</span>}
           </div>
         </div>
