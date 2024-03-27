@@ -125,20 +125,20 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
   return (
     <div>
       <Header />
-      <div className="bg-gray-50 min-h-screen flex">
-        <Sidebar activeItem="overview" />
-        <main className="flex ">
-          <div className="container  p-8 w-[100%]">
-            <div className="bg-white shadow-lg rounded-lg p-6 h-[480px] w-[672px]">
-              <div className="flex justify-between items-center mb-2">
-                <h1 className="text-3xl font-semibold text-gray-800">Stream Details</h1>
+      <div className="bg-gray-50 min-h-screen flex flex-col lg:flex-row">
+      <Sidebar activeItem="overview" />
+      <main className="flex flex-col lg:flex-row flex-1">
+        <div className="flex-1 p-8">
+          <div className="bg-white shadow-lg rounded-lg p-6 h-auto lg:h-[480px] mx-auto mb-6 lg:mb-0" style={{ maxWidth: '672px' }}>
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6">
+              <h1 className="text-xl lg:text-3xl font-semibold text-gray-800">Stream Details</h1>
                 {!isEditing && (
                    <><button
                    onClick={() => window.open('https://www.researchgate.net/publication/359606643_Deaf_Helper_Mobile_Application_for_Interaction_of_Hearing_Disorders_Communities', '_blank')}
-                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4"
+                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 lg:mt-0 lg:mr-4"
                  >
                    Read Instructions
-                 </button><button onClick={handleEditDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                 </button><button onClick={handleEditDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 lg:mt-0">
                       Edit
                     </button></>
                 )}
@@ -182,7 +182,7 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
                   />
                 </div>
                 {isEditing && (
-                  <div className="flex items-center justify-end">
+                  <div className="flex flex-col lg:flex-row items-center justify-end mt-4">
 
                     <button onClick={handleSaveDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">
                       Save
@@ -195,10 +195,10 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
               </div>
             </div>
           </div>
-          <div className="container mx-auto p-8 w-[60%]  flex justify-end h-[380px]"> {/* Adjusted container */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
+          <div className="flex-1 p-8"> {/* Adjusted container */}
+          <div className="bg-white shadow-lg rounded-lg p-6 mx-auto" style={{ maxWidth: '672px' }}>
           <div className="flex justify-between items-center mb-2">
-            <h1 className="text-3xl font-semibold text-gray-800">QR Code</h1>
+            <h1 className="text-xl lg:text-3xl font-semibold text-gray-800">QR Code</h1>
           </div>
           <div className='mb-6'>
             <p>Click on QR to copy the link</p>

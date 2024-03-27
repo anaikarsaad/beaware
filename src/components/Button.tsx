@@ -9,7 +9,7 @@ const Button: React.FC<ButtonProps> = ({ buttonText, onClick }) => {
   return (
     <button
       onClick={onClick} // Use the onClick prop here
-      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+      className="text-white w-[80%] bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded-full text-lg"
     >
       {buttonText}
     </button>

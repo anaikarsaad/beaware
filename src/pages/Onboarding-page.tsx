@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { getDatabase, ref, push, set } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import { app} from '../firebase'; // Assuming 'app' is your Firebase app instance
-
+import Header from '../components/Header';
+import LogoImage from '../images/Logo.png';
 const OnboardingPage: React.FC = () => {
   const [color, setColor] = useState("");
   const auth = getAuth(app);
@@ -14,7 +15,7 @@ const OnboardingPage: React.FC = () => {
   const [showColor, setShowColor] = useState(false);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
-
+  const [showTooltip, setShowTooltip] = useState(false);
   // Handle change for the name input
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -60,37 +61,70 @@ const OnboardingPage: React.FC = () => {
 };
 
   return (
+   
+
+   
     <div className='flex items-center justify-center h-screen bg-[#F6F6F6] p-4'>
-    <div className='w-full max-w-md bg-white rounded-2xl shadow-2xl p-6'>
+              
+
+    <div className='w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 flex-row'>
+      <div className='flex justify-center'>
+      <img src={LogoImage} alt="Logo" className="h-12 self-center " />
+      </div>
+   
       {/* Form Content */}
-      <div className='pt-10 flex flex-col gap-1 text-center'>
+      <div className='pt-5 flex flex-col gap-1 text-center'>
         <p className='font-bold text-2xl tracking-wide'>Let's set up some basic details</p>
-        <p>Fill the form to know you better</p>
+        <div className='relative inline-block'>
+        <div className='relative inline-block'> {/* This is the key change */}
+            <p className='mb-3 inline-block'>Fill the form to know you better</p>
+            {/* Tooltip trigger button */}
+            <button
+              className='inline-block ml-2 relative z-10' // Ensure this is above the tooltip
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+            >
+              <span className='text-gray-500 text-sm'>?</span>
+            </button>
+            {/* Tooltip content */}
+            {showTooltip && (
+              <div className='absolute bg-white text-sm text-left p-3 rounded-lg shadow-lg w-64'
+                style={{ bottom: '60%', left: '180%', transform: 'translateX(-50%)', zIndex: 20 }}>
+               <ul>
+            <li><strong>Enter the name of the image:</strong> Provide a descriptive name for your stream.</li>
+            <li><strong>Upload the image or paste URL:</strong> Provide the logo for your stream.</li>
+            <li><strong>Enter the HEX code of the color:</strong> Choose a color that represents your stream.</li>
+          </ul>
+              </div>
+            )}
+          </div>
+      </div>
+        
       </div>
       <input
         placeholder='Stream Name'
         value={name}
         onChange={handleNameChange}
-        className='w-full bg-gray-100 border border-gray-300 rounded-2xl text-base outline-none text-gray-700 py-2 px-4 my-4'
+        className='w-full bg-gray-100 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-2xl text-base outline-none text-gray-700 py-2 px-4 my-2'
       />
       <input
-        placeholder='Stream Image Link'
+        placeholder='Stream Logo URL'
         value={imageLink}
         onChange={handleImageLinkChange}
-        className='w-full bg-gray-100 border border-gray-300 rounded-2xl text-base outline-none text-gray-700 py-2 px-4 my-4'
+        className='w-full bg-gray-100 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-2xl text-base outline-none text-gray-700 py-2 px-4 my-2'
       />
         {/* Color Picker Input */}
-        <div className='relative my-4'>
+        <div className='relative my-2'>
           <input
-            placeholder='Color'
+            placeholder='Stream Color'
             value={color} // Bind color state to input
             onChange={handleColor}
             onFocus={handleFocus}
             onBlur={() => setShowColor(false)}
-            className='w-full bg-gray-100 border border-gray-300 rounded-2xl text-base outline-none py-2 px-4'
+            className='w-full bg-gray-100 border focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-2xl text-base outline-none py-2 px-4'
           />
           <div
-            className='h-8 w-8 rounded-full absolute top-1/2 left-[85%] transform -translate-y-1/2'
+            className='h-7 w-7 rounded-full absolute top-1/2 left-[85%] transform -translate-y-1/2'
             style={{ backgroundColor: color }}
           ></div>
         </div>
@@ -101,6 +135,7 @@ const OnboardingPage: React.FC = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

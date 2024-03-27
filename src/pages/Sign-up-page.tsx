@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { app } from '../firebase'; // Ensure you have this Firebase configuration file
 import LogoImage from '../images/Logo.png'; // Update with your actual path
 
@@ -107,14 +107,17 @@ const SignUpPage: React.FC = () => {
   return (
     <div className="flex flex-col lg:flex-row ">
       {/* Left Column */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-start lg:justify-center items-center lg:items-start px-6 lg:px-12 py-8 lg:py-12 lg:pt-24">
+      <div className="w-full lg:w-1/2 flex flex-col justify-start  items-center lg:items-start px-6 lg:px-12 py-8 lg:py-12 lg:pt-24">
         <img src={LogoImage} alt="Logo" className="h-12 mb-6" />
         
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Sign-up to our application</h1>
-        <p className="mb-8">Already have an account?  <a href="/login" className="text-blue-600 hover:underline">Login</a>
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-2">Sign-up to our application</h1>
+        <p className="mb-8">Already have an account?  <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
         </p>
 
         <form onSubmit={handleSubmit} className="w-full max-w-md">
+          <div className='flex-col justify-center '>
+
+          
           <div className="mb-4">
             <input
               type="text"
@@ -123,7 +126,7 @@ const SignUpPage: React.FC = () => {
               value={formData.name}
               onChange={handleChange}
               placeholder="Name"
-              className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-[105%] bg-gray-100 rounded-2xl border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
             />
           </div>
@@ -136,7 +139,7 @@ const SignUpPage: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Email"
-              className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-[105%] bg-gray-100 rounded-2xl border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
             />
             {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
@@ -150,18 +153,20 @@ const SignUpPage: React.FC = () => {
               value={formData.password}
               onChange={handleChange}
               placeholder="Password"
-              className="w-full bg-gray-100 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-[105%] bg-gray-100 rounded-2xl border border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               required
             />
             {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
           </div>
-
+          <div className='flex justify-center ml-3'>
           <button
             type="submit"
-            className="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded-lg text-lg"
+            className="text-white w-[100%] bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded-full text-lg"
           >
             Let's go
           </button>
+          </div>
+          </div>
 
           <div className="text-xs text-gray-500 mt-3">
             By creating an account you are agreeing to the 

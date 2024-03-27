@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.18",
     "@uiw/react-color": "^2.0.6",
     "@uiw/react-color-circle": "^2.0.6",
+    "axios": "^1.6.8",
     "color-picker": "^0.0.1",
     "dom": "^0.0.3",
     "firebase": "^10.8.1",
