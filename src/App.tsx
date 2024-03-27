@@ -18,7 +18,7 @@ import CompanionSetup from './pages/CompanionSetup';
 import ImageInfo from './pages/ImageInfo';
 import AccountDetails from './pages/AccountDetails';
 import Overview from './pages/Overview';
-
+import StreamFetch from './pages/StreamFetch';
 const exampleName = "Your Name";
 const exampleImageUrl = "https://example.com/image.jpg";
 const exampleQrCodeData = "Some QR Code Data";
@@ -31,7 +31,7 @@ const check:boolean = false;
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
-     <Route path='/' element={<Admin></Admin>}/>
+     <Route path='/' element={<StreamFetch></StreamFetch>}/>
       <Route path='/onboarding' element={<OnboardingPage/>}/>
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/signup' element={<SignUpPage/>}/>
