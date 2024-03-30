@@ -67,7 +67,7 @@ const AccountDetails: React.FC = () => {
   return (
     <div>
       <Header showDeleteButton onDeleteAccount={handleDeleteAccount} />
-      <div className="bg-gray-50 min-h-screen flex">
+      <div className="bg-gray-50 min-h-screen flex  flex-col lg:flex-row">
         <Sidebar activeItem="profile" />
         <main className="flex-1">
           <div className="container mx-auto p-8">

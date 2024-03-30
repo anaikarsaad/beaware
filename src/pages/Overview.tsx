@@ -126,7 +126,7 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
     <div>
       <Header />
       <div className="bg-gray-50 min-h-screen flex flex-col lg:flex-row">
-      <Sidebar activeItem="overview" />
+      <Sidebar  activeItem="overview"/>
       <main className="flex flex-col lg:flex-row flex-1">
         <div className="flex-1 p-8">
           <div className="bg-white shadow-lg rounded-lg p-6 h-auto lg:h-[480px] mx-auto mb-6 lg:mb-0" style={{ maxWidth: '672px' }}>
