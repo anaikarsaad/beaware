@@ -7,9 +7,13 @@ import { getAuth } from 'firebase/auth';
 import { app} from '../firebase'; // Assuming 'app' is your Firebase app instance
 import Header from '../components/Header';
 import LogoImage from '../images/Logo.png';
+import axios from 'axios';
+import StreamAnimation from '../components/StreamLoading';
 const OnboardingPage: React.FC = () => {
   const [color, setColor] = useState("");
   const auth = getAuth(app);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [name, setName] = useState(""); // State for user name
   const [imageLink, setImageLink] = useState(""); // State for image link
   const [showColor, setShowColor] = useState(false);
@@ -33,10 +37,38 @@ const OnboardingPage: React.FC = () => {
   const handleFocus = () => {
     setShowColor(true);
   };
-
+  const createStreamWithStyle = async (name:string) => {
+    const apiUrl = 'http://localhost:3001/createStreamWithStyle';
+    const data = {
+      name: name,
+      bannerColor: '#F77777',
+      logoUrl: "https://example.com/logo.jpg"
+    };
+  
+    const startTime = Date.now(); // Record the start time of the operation
+  
+    try {
+      const response = await axios.post(apiUrl, data);
+      console.log(response.data);
+      console.log("success");
+  
+      const endTime = Date.now(); // Record the end time of the API call
+      let timeTaken = endTime - startTime;
+  
+      // Ensure user sees loading state for at least 3 seconds in total
+      if (timeTaken < 3000) {
+        await new Promise((resolve) => setTimeout(resolve, 3000 - timeTaken));
+      }
+  
+      // Navigate after ensuring total wait time of at least 3 seconds
+      navigate('/overview', { state: { responseData: response.data } });
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setIsSubmitting(true); 
     // Save user details to Firebase database
     if (user) {
       const db = getDatabase(app);
@@ -53,20 +85,33 @@ const OnboardingPage: React.FC = () => {
         // Use set instead of push
         await set(userRef, formData); // This will overwrite the data at this path with formData
         console.log('User details saved:', formData);
-        navigate('/overview');
+       createStreamWithStyle(name);
+        // navigate('/');
       } catch (error: any) {
         console.error('Error saving user details:', error.message);
       }
     }
+   
 };
 
   return (
    
 
-   
-    <div className='flex items-center justify-center h-screen bg-[#F6F6F6] p-4'>
-              
-
+    <div>
+    
+          {isSubmitting ? (
+        // Loading Animation
+        <div className='flex flex-col justify-center items-center mt-[9%]'>
+          <div className='w-[40%] height-[35%]'>
+            <StreamAnimation />
+          </div>
+          <div className='flex flex-col'>
+            <p className='text-2xl'>Your link is generating</p>
+            <p className='text-[#4F4F4F] self-center'>This may take a few seconds</p>
+          </div>
+        </div>
+      ) : (    
+        <div className='flex items-center justify-center h-screen bg-[#F6F6F6] p-4'>
     <div className='w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 flex-row'>
       <div className='flex justify-center'>
       <img src={LogoImage} alt="Logo" className="h-12 self-center " />
@@ -134,6 +179,7 @@ const OnboardingPage: React.FC = () => {
           <Button buttonText='Submit' onClick={handleSubmit} />
         </div>
       </div>
+      </div>)}
     </div>
     
   );

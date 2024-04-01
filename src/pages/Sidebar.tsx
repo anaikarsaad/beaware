@@ -60,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem }) => {
         <div className="p-4 flex-1">
           <h2 className="text-xl font-semibold">General</h2>
           <nav className="mt-8">
-          <Link to="/overview" className={`block py-2.5 px-4 rounded ${isActive('overview')}`}>
+          <Link to="/" className={`block py-2.5 px-4 rounded ${isActive('overview')}`}>
   Overview
 </Link>
 <Link to="/profile" className={`block py-2.5 px-4 rounded mt-2 ${isActive('profile')}`}>
@@ -68,12 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem }) => {
 </Link>
           </nav>
         </div>
-        <button
-          onClick={handleLogout} // Call handleLogout function on button click
-          className="block py-2 px-3 rounded text-blue-500 hover:bg-red-600 hover:text-white transition-colors duration-200 w-full text-left lg:mt-auto"
-        >
-          Logout
-        </button>
+        
       </aside>
     </>
   );

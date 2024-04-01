@@ -19,66 +19,60 @@ import ImageInfo from './pages/ImageInfo';
 import AccountDetails from './pages/AccountDetails';
 import Overview from './pages/Overview';
 import StreamFetch from './pages/StreamFetch';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getDatabase, ref, onValue ,update} from 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { app } from './firebase'; 
+import AuthenticatedRoute from './components/AuthenticatedRoute';
+import { BrowserRouter } from 'react-router-dom';
 const exampleName = "Your Name";
 const exampleImageUrl = "https://example.com/image.jpg";
 const exampleQrCodeData = "Some QR Code Data";
 
 
-
-
 const App: React.FC = () => {
-const check:boolean = false;
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route>
-     <Route path='/' element={<StreamFetch></StreamFetch>}/>
-      <Route path='/onboarding' element={<OnboardingPage/>}/>
-      <Route path='/login' element={<LoginPage/>}/>
-      <Route path='/signup' element={<SignUpPage/>}/>
-      <Route path='/forgetPassword' element={<ForgotPassword/>}/>
-       <Route path='/profile' element={<AccountDetails/>}></Route> 
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgetPassword" element={<ForgotPassword />} />
 
-      {/* <Route path='/cs' element={<CompanionSetup/>}/> */}
-      {/* <Route path="/ii" element={<ImageInfo name="Sample Image" imageUrl="https://via.placeholder.com/300" qrCodeData="Sample QR Code Data" />} /> */}
-
-       <Route path='/overview' element={
-  <Overview
+        {/* Protected routes inside AuthenticatedRoute */}
+        <Route
+          path="/"
+          element={
+            <AuthenticatedRoute>
+            <Overview
     name={exampleName}
     imageUrl={exampleImageUrl}
     qrCodeData={exampleQrCodeData}
+    
   />
-} /> 
-
-      <Route path='/dashboard' element={
-          <Dashboard/>}/>
-
-    
-
-      
-
-    <Route  
-    path='/admin'  
-    element={<Admin/>}
-     loader={async () => {
-      const user = await check
-      if (!check) {
-        throw redirect("/signup");
-      }
-
-      return "hello"
-    }}
-    
-    />
-    </Route>
-    
-    )
-  );
- 
-  return (
-    
-    <RouterProvider router={router} />
-    
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <AuthenticatedRoute>
+              <AccountDetails/>
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <AuthenticatedRoute>
+              <Admin />
+            </AuthenticatedRoute>
+          }
+        />
+        {/* Add other routes as needed */}
+      </Routes>
+    </BrowserRouter>
   );
 };
 
-export default App
+export default App;

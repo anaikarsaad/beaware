@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import LogoImage from '../images/Logo.png'; // Update with your actual path
@@ -6,6 +6,7 @@ import image from '../images/sapien.png'; // Update with your actual path
 import GoogleLogo from '../images/google-logo.png'; // Add your Google logo SVG path
 import { app } from '../firebase'; // Ensure you have this Firebase configuration file
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import MyLottieAnimation from '../components/LottieAnimation';
 import { Link } from 'react-router-dom';
 const LoginPage: React.FC = () => {
@@ -14,8 +15,16 @@ const LoginPage: React.FC = () => {
     password: '',
   });
   const [error, setError] = useState<string | null>(null); // State to hold error message
+
+  const auth = getAuth();
+  const [user, loading,] = useAuthState(auth);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (user) {
+      navigate('/', { replace: true });
+    }
+  }, [user, navigate]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
     setError(null); 
@@ -28,7 +37,7 @@ const LoginPage: React.FC = () => {
     try {
       await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
       console.log('Login successful');
-      navigate('/overview');
+      navigate('/', { replace: true });
     } catch (error: any) {
       console.error('Error logging in:', error.message);
       setError('Invalid email or password. Please try again.'); // Set error message

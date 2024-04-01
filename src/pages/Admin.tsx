@@ -2,18 +2,31 @@ import React from 'react';
 import StreamAnimation from '../components/StreamLoading';
 const Admin: React.FC = () => {
   return (
-    <div className='flex flex-col justify-center items-center mt-[9%]'>
-        
-        <div className='w-[40%] height-[35%]'>
-        <StreamAnimation/>
-        </div>
-        <div className='flex flex-col'>
-          <p className='text-2xl'>Your link is generating</p>
-          <p className='text-[#4F4F4F] self-center'>This may take few seconds</p>
-        </div>
-        
-        </div>
+    <div style={{ height: '100vh' }} className="flex justify-center items-center">
+      <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+      <style>
+        {`
+          .loader {
+              border-top-color: #3498db; /* Blue spinner color */
+              -webkit-animation: spinner 1.5s linear infinite;
+              animation: spinner 1.5s linear infinite;
+          }
+          
+          @-webkit-keyframes spinner {
+              0% { -webkit-transform: rotate(0deg); }
+              100% { -webkit-transform: rotate(360deg); }
+          }
+          
+          @keyframes spinner {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
+    </div>
   );
+
+  
 }
 
 export default Admin;
