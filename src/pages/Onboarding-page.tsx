@@ -37,12 +37,12 @@ const OnboardingPage: React.FC = () => {
   const handleFocus = () => {
     setShowColor(true);
   };
-  const createStreamWithStyle = async (name:string) => {
+  const createStreamWithStyle = async (name:string,image:string,color:string) => {
     const apiUrl = 'http://localhost:3001/createStreamWithStyle';
     const data = {
       name: name,
-      bannerColor: '#F77777',
-      logoUrl: "https://example.com/logo.jpg"
+      bannerColor: color,
+      logoUrl: image
     };
   
     const startTime = Date.now(); // Record the start time of the operation
@@ -61,7 +61,7 @@ const OnboardingPage: React.FC = () => {
       }
   
       // Navigate after ensuring total wait time of at least 3 seconds
-      navigate('/overview', { state: { responseData: response.data } });
+      navigate('/', { state: { responseData: response.data } });
     } catch (error) {
       console.error('There was an error!', error);
     }
@@ -85,7 +85,7 @@ const OnboardingPage: React.FC = () => {
         // Use set instead of push
         await set(userRef, formData); // This will overwrite the data at this path with formData
         console.log('User details saved:', formData);
-       createStreamWithStyle(name);
+       createStreamWithStyle(name,imageLink,color);
         // navigate('/');
       } catch (error: any) {
         console.error('Error saving user details:', error.message);

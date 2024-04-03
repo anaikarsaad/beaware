@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ showDeleteButton = false, onDeleteAccou
   };
 
   return (
-    <header className="bg-[#FFFFFF] text-white py-2 h-18">
+    <header className="bg-[#FFFFFF] text-white py-2 h-18 border-b-[1px] border-[#D1D1D1]">
       <div className="container ml-8 flex items-center justify-between">
         <img src={LogoImage} alt="Logo" className="h-10 mb-2" />
         {showDeleteButton  && (

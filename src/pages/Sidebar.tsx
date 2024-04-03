@@ -45,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem }) => {
   return (
     <>
       {/* Burger menu button for small screens */}
-      <div className='relative mb-2'>
+      <div className='relative mb-2 border-red-900'>
       <button
         onClick={toggleMobileMenu}
         className="lg:hidden text-4xl text-blue-500 hover:text-blue-700 lg:p-4 absolute top-[7%] left-[1%]"
@@ -56,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem }) => {
       
 
       {/* Sidebar for large screens and mobile menu for small screens */}
-      <aside className={`bg-white shadow z-30 fixed lg:static inset-y-0 left-0 transform ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition duration-300 ease-in-out lg:flex lg:flex-col w-64`}>
+      <aside className={`bg-white shadow-lg z-30 fixed lg:static inset-y-0 left-0 transform ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition duration-300 ease-in-out lg:flex lg:flex-col w-64 border-r-[1px] border-[#D1D1D1]`}>
         <div className="p-4 flex-1">
           <h2 className="text-xl font-semibold">General</h2>
           <nav className="mt-8">

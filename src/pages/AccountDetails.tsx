@@ -106,10 +106,13 @@ const AccountDetails: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className='flex justify-center items-center'>
+          <div className='flex items-center justify-center'>
+
+          
+          
           <button
           onClick={handleLogout} // Call handleLogout function on button click
-          className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded self-center"
+          className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded self-center w-[148px]"
         >
           Logout
         </button>
@@ -118,7 +121,7 @@ const AccountDetails: React.FC = () => {
          {!showConfirmationModal &&
           <button
                   onClick={handleDeleteAccount}
-                  className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded self-center"
+                  className="mt-4 border-[2px] border-red-500  text-red-500 font-bold py-2 px-4 rounded self-center w-[155px]"
                 >
                   Delete Account
                 </button>}
@@ -126,10 +129,11 @@ const AccountDetails: React.FC = () => {
           </div>
           
           
+          
           {showConfirmationModal && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-white p-8 rounded-lg flex flex-col items-center">
-                  <p className='text-black'>Are you sure you want to delete your account?</p>
+                  <p className='text-black font-bold'>Are you sure you want to delete your account?</p>
                   <div className="mt-4 flex justify-end">
                     <button onClick={cancelDelete} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-4">
                       Cancel
@@ -144,10 +148,10 @@ const AccountDetails: React.FC = () => {
             {showPasswordConfirmationModal && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
     <div className="bg-white p-8 rounded-lg flex flex-col items-center">
-      <p className='text-black'>Please confirm your password to delete your account:</p>
+      <p className='text-black font-bold'>Please confirm your password to delete your account</p>
       <input
         type="password"
-        className="mt-2 p-2 border rounded w-[80%]"
+        className="mt-2 p-2 border-[1px] rounded w-[80%] border-[#B0B0B0]"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />

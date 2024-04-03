@@ -64,8 +64,16 @@ const App: React.FC = () => {
         <Route
           path="/admin"
           element={
-            <AuthenticatedRoute>
+            
               <Admin />
+            
+          }
+        />
+        <Route
+          path="/onboarding"
+          element={
+            <AuthenticatedRoute>
+              <OnboardingPage/>
             </AuthenticatedRoute>
           }
         />
