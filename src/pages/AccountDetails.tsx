@@ -7,6 +7,7 @@ import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } 
 import { app } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import {  signOut } from 'firebase/auth';
+import LogoImage from '../images/LogoName.png';
 const AccountDetails: React.FC = () => {
   const [userData, setUserData] = useState({ name: "", email: "" });
   const [user, loading, error] = useAuthState(getAuth(app));
@@ -15,7 +16,7 @@ const AccountDetails: React.FC = () => {
 
   const navigate = useNavigate();
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
+  const[showLogoutModal,setShowLogoutModal]=useState(false);
   
 
   
@@ -63,6 +64,14 @@ const AccountDetails: React.FC = () => {
     
     setShowConfirmationModal(true);
   };
+
+  const toggleLogout=()=>{
+    setShowLogoutModal(true);
+  }
+
+  const cancelLogout=()=>{
+    setShowLogoutModal(false);
+  }
   
   const confirmDelete = () => {
     setShowConfirmationModal(false); // Close the confirmation modal first
@@ -94,14 +103,43 @@ const AccountDetails: React.FC = () => {
       <div className="flex flex-1 overflow-auto bg-gray-50">
         <Sidebar activeItem="profile" />
         <main className="flex-1">
-          <div className="container mx-auto p-8 flex-1 ">
-            <div className="bg-white shadow-lg rounded-lg p-6">
-              <div className="mb-2">
+        <div className="container mx-auto p-8 pb-0 flex justify-center">
+          <div className="bg-white shadow-lg rounded-lg p-6 w-[50%] flex justify-center">
+          <div className="mb">
+          {/* <img src={LogoImage} alt="Logo" className="h-10 mb-2 justify-center" /> */}
                 <h1 className="text-3xl font-semibold text-gray-800">Account Details</h1>
               </div>
+          </div>
+        </div>
+          <div className="container mx-auto p-8 flex justify-center">
+            <div className="bg-white shadow-lg rounded-lg p-6 w-[50%]">
+              {/* <div className="mb-2">
+                <h1 className="text-3xl font-semibold text-gray-800">Account Details</h1>
+              </div> */}
               <div className="space-y-4">
-                <p><strong>Name:</strong> {userData.name}</p>
-                <p><strong>Email:</strong> {userData.email}</p>
+              <div>
+                  <label className="text-gray-600 mb-2">Email</label>
+                  <input
+                    type="text"
+                    value={userData.email}
+                    readOnly={true}
+                    
+                    name="imageUrl"
+                    className="w-full bg-gray-100 border focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-2xl text-base outline-none py-2 px-4 mt-3"
+                  />
+                </div>
+                <div>
+                  <label className="text-gray-600 mb-2">Name</label>
+                  <input
+                    type="text"
+                    value={userData.name}
+                    readOnly={true}
+                    
+                    name="imageUrl"
+                    className="w-full bg-gray-100 border focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-2xl text-base outline-none py-2 px-4 mt-3"
+                  />
+                </div>
+               
                
               </div>
             </div>
@@ -109,13 +147,32 @@ const AccountDetails: React.FC = () => {
           <div className='flex items-center justify-center'>
 
           
+          {!showLogoutModal &&
+            <button
+            onClick={toggleLogout} // Call handleLogout function on button click
+            className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded self-center w-[148px]"
+          >
+            Logout
+          </button>
+          }
+          {
+            showLogoutModal &&
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white p-8 rounded-lg flex flex-col items-center">
+                  <p className='text-black font-bold'>Are you sure you want to logout account?</p>
+                  <div className="mt-4 flex justify-end">
+                    <button onClick={cancelLogout} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-4">
+                      Cancel
+                    </button>
+                    <button onClick={handleLogout} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                      Confirm
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+          }
           
-          <button
-          onClick={handleLogout} // Call handleLogout function on button click
-          className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded self-center w-[148px]"
-        >
-          Logout
-        </button>
           </div>
           <div className='flex justify-center items-center'>
          {!showConfirmationModal &&

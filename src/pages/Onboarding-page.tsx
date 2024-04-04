@@ -8,12 +8,13 @@ import { app} from '../firebase'; // Assuming 'app' is your Firebase app instanc
 import Header from '../components/Header';
 import LogoImage from '../images/Logo.png';
 import axios from 'axios';
+import InfoModal from '../components/OnshowModal';
 import StreamAnimation from '../components/StreamLoading';
 const OnboardingPage: React.FC = () => {
   const [color, setColor] = useState("");
   const auth = getAuth(app);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [name, setName] = useState(""); // State for user name
   const [imageLink, setImageLink] = useState(""); // State for image link
   const [showColor, setShowColor] = useState(false);
@@ -100,7 +101,6 @@ const OnboardingPage: React.FC = () => {
     <div>
     
           {isSubmitting ? (
-        // Loading Animation
         <div className='flex flex-col justify-center items-center mt-[9%]'>
           <div className='w-[40%] height-[35%]'>
             <StreamAnimation />
@@ -126,22 +126,12 @@ const OnboardingPage: React.FC = () => {
             {/* Tooltip trigger button */}
             <button
               className='inline-block ml-2 relative z-10' // Ensure this is above the tooltip
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
+              
+              onClick={()=>{setShowModal(true)}}
             >
               <span className='text-gray-500 text-sm'>?</span>
             </button>
-            {/* Tooltip content */}
-            {showTooltip && (
-              <div className='absolute bg-white text-sm text-left p-3 rounded-lg shadow-lg w-64'
-                style={{ bottom: '60%', left: '180%', transform: 'translateX(-50%)', zIndex: 20 }}>
-               <ul>
-            <li><strong>Enter the name of the image:</strong> Provide a descriptive name for your stream.</li>
-            <li><strong>Upload the image or paste URL:</strong> Provide the logo for your stream.</li>
-            <li><strong>Enter the HEX code of the color:</strong> Choose a color that represents your stream.</li>
-          </ul>
-              </div>
-            )}
+            <InfoModal show={showModal} onClose={() => setShowModal(false)} />
           </div>
       </div>
         
