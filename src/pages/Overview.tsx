@@ -8,9 +8,10 @@ import { getAuth } from 'firebase/auth';
 import { app } from '../firebase'; 
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import UpdatingAnimation from '../components/UpdatingAnimation';
 import SuccessAnimation from '../components/SuccessAnimation';
+import instructionManual from '../images/confrence.pdf';
 interface OverviewProps {
   name: string;
   imageUrl: string;
@@ -172,6 +173,9 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
       // Navigate after ensuring total wait time of at least 3 seconds
       
     } catch (error) {
+      
+      console.log();
+      
       console.error('There was an error!', error);
     }
   };
@@ -229,6 +233,29 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
     });
   };
 
+  // Inside your component
+const handleDownload = () => {
+  const link = document.createElement('a');
+    link.href = instructionManual;
+    link.download = 'InstructionManual.pdf'; // or the name you want
+    link.target = '_blank'; // This will open the PDF in a new tab to view
+    document.body.appendChild(link);
+    
+    // Simulate a click on the link
+    link.click();
+    
+    // Open the PDF in a new tab to view
+    window.open(instructionManual);
+
+    // Clean up the link element from the document
+    document.body.removeChild(link);
+};
+
+// ...
+
+
+
+
   const handleCopy = () => {
     // Construct the URL you want to copy
     const urlToCopy = `http://deafassistant.com/${encodeURIComponent(streamData.streamName)}`;
@@ -263,24 +290,22 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
     )}
 
       <div className="flex flex-1 overflow-auto bg-gray-50 ">
-      <Sidebar  activeItem="overview"/>
+       
+        <Sidebar  activeItem="overview"/>
+      
+      
       <main className="flex flex-col lg:flex-row flex-1">
         <div className="flex-1 p-8 pb-0">
-          <div className="bg-white shadow-lg rounded-lg p-6 h-auto lg:h-[480px] mx-auto mb-6 lg:mb-0" style={{ maxWidth: '672px' }}>
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6">
+          <div className="bg-white shadow-lg rounded-lg p-6 h-auto lg:h-[480px] mx-auto mb-6 lg:mb-0 lg:w-[720px]" >
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-2">
               <h1 className="text-xl lg:text-3xl font-semibold text-gray-800">Stream Details</h1>
                 {!isEditing && (
-                   <><button
-                   onClick={() => window.open('https://uwin365-my.sharepoint.com/:b:/g/personal/gopan_uwindsor_ca/EVdikoDaqhdHtpqMMXRrR3MB0uNMrrJYCjL3fsB00exjuw?e=i54VPt', '_blank')}
-                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 lg:mt-0 lg:mr-4"
-                 >
-                   Download Manual
-                 </button><button onClick={handleEditDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 lg:mt-0">
+                   <><button onClick={handleEditDetails} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 lg:mt-3">
                       Edit
                     </button></>
                 )}
               </div>
-              <div className='mb-6'>
+              <div className='mb-4'>
                 <p>Your information will be displayed here</p>
               </div>
               <div className="space-y-4">
@@ -329,14 +354,26 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
             className='w-full bg-gray-100 border focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-2xl text-base outline-none py-2 px-4 '
           />
           <div
-            className='h-7 w-7 rounded-full absolute top-1/2 left-[85%] transform -translate-y-1/2'
+            className='h-7 w-7 rounded-full absolute top-1/2 left-[93%] transform -translate-y-1/2'
             style={{ backgroundColor: streamData.streamColor }}
           ></div>
         </div>
                 </div>
+                <div className='mt-4'>
+                {
+                  !isEditing && (
+                    <button
+                    onClick={handleDownload}
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 lg:mt-0 lg:mr-4"
+                  >
+                    Download Manual
+                  </button>
+                  )
+                }
+               
                 {isEditing && (
-                  <div className="flex flex-col lg:flex-row items-center justify-end mt-4">
-
+                  
+                  <div className="flex flex-col lg:flex-row items-center justify-end ">
                     <button
                       onClick={handleSaveDetails}
                       className={`font-bold py-2 px-4 rounded mr-4 transition-opacity duration-300 ${hasChanges ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-blue-400 text-white opacity-60 cursor-not-allowed'}`}
@@ -347,22 +384,30 @@ const Overview: React.FC<OverviewProps> = ({ name: initialName, imageUrl: initia
                     <button onClick={handleCancelEdit} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                       Cancel
                     </button>
-                  </div>
+                    </div>
+                 
                 )}
+                </div>
+                
               </div>
             </div>
           </div>
-          <div className="flex-1 p-8 flex flex-col items-center"> {/* Adjusted container */}
-          <div className="bg-white shadow-lg rounded-lg p-6 mx-auto" style={{ maxWidth: '672px' }}>
-          <div className="flex  items-center justify-center mb-2">
+          <div className="flex-1 p-8 flex flex-col items-center"> 
+          <div className="bg-white shadow-lg rounded-lg p-6 mx-auto lg:h-[480px] lg:w-80">
+          <div className="flex  items-center justify-center mb-2 mt-6">
             <h1 className="text-xl lg:text-3xl font-semibold text-gray-800 self-center">QR Code</h1>
           </div>
-          <div className='mb-6'>
+          <div className='mb-6 flex justify-center'>
             <p>Click on QR to copy the link</p>
           </div>
-          <div className='pl-3' onClick={handleCopy}>
-          <QRCode value={`http://deafassistant.com/${encodeURIComponent(streamData.streamName)}`} size={180} />
+          <div className='pl-3 flex justify-center' onClick={handleCopy}>
+          <QRCode value={`http://deafassistant.com/${encodeURIComponent(streamData.streamName)}`} size={250} />
             {copied && <span className='pl-3'>Copied to clipboard!</span>}
+          </div>
+          <div className='mt-6 flex justify-center'>
+          <a href={`http://deafassistant.com/${encodeURIComponent(streamData.streamName)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+    {`http://deafassistant.com/${encodeURIComponent(streamData.streamName)}`}
+  </a>
           </div>
         </div>
       </div>
