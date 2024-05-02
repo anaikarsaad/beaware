@@ -48,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem }) => {
       <div className='relative mb-2 border-red-900'>
       <button
         onClick={toggleMobileMenu}
-        className="lg:hidden text-4xl text-blue-500 hover:text-blue-700 lg:p-4 absolute top-[7%] left-[1%]"
+        className="lg:hidden text-4xl text-blue-500 hover:text-blue-700 lg:p-4 absolute top-[0%] left-[1%]"
       >
         ☰
       </button>

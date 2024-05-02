@@ -16,7 +16,7 @@ interface InfoModalProps {
             <h2 className="font-bold">Information</h2>
           </div>
           <ul>
-            <li><strong>Enter the name of the image:</strong> Provide a descriptive name for your stream.</li>
+            <li><strong>Enter the Stream name :</strong> Provide a descriptive name for your stream.</li>
             <li><strong>Upload the image or paste URL:</strong> Provide the logo for your stream.</li>
             <li><strong>Enter the HEX code of the color:</strong> Choose a color that represents your stream.</li>
           </ul>

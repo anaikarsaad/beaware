@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import QRCode from 'qrcode.react'; // Import QRCode component
+import QRCode from 'qrcode.react'; 
 import Sidebar from './Sidebar'; 
 import Header from '../components/Header';
 import { useAuthState } from 'react-firebase-hooks/auth';
