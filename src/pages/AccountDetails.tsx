@@ -101,7 +101,10 @@ const AccountDetails: React.FC = () => {
     <div className="flex flex-col h-screen overflow-hidden">
       <Header showDeleteButton onDeleteAccount={handleDeleteAccount} />
       <div className="flex flex-1 overflow-auto bg-gray-50">
+     
         <Sidebar activeItem="profile" />
+      
+        
         <main className="flex-1">
         <div className="container mx-auto p-8 pb-0 flex justify-center">
           <div className="bg-white shadow-lg rounded-lg p-6 w-[50%] flex justify-center">
@@ -150,7 +153,7 @@ const AccountDetails: React.FC = () => {
           {!showLogoutModal &&
             <button
             onClick={toggleLogout} // Call handleLogout function on button click
-            className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded self-center w-[148px]"
+            className="mt-4 border-[2px] border-red-500  text-red-500 font-bold py-2 px-4 rounded self-center w-[155px]"
           >
             Logout
           </button>

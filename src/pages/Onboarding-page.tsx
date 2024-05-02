@@ -122,7 +122,7 @@ const OnboardingPage: React.FC = () => {
         <p className='font-bold text-2xl tracking-wide'>Let's set up some basic details</p>
         <div className='relative inline-block'>
         <div className='relative inline-block'> {/* This is the key change */}
-            <p className='mb-3 inline-block'>Fill the form to know you better</p>
+            <p className='mb-3 inline-block'>Fill the Stream Details</p>
             {/* Tooltip trigger button */}
             <button
               className='inline-block ml-2 relative z-10' // Ensure this is above the tooltip
